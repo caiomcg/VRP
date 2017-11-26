@@ -1,5 +1,7 @@
 package InputReader;
 
+import Graph.Graph;
+
 public interface Reader {
-    int[][] fetchMatrix();
+    Graph fetchGraph();
 }

@@ -1,8 +1,16 @@
 package InputReader;
 
+import Graph.Graph;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+//    1  2  3  4
+// 1  0  4  2  6
+// 2  4  0  4  3
+// 3  2  4  0  7
+// 4  6  3  7  0
 
 public class InputReader implements Reader{
     private String filePath;
@@ -12,12 +20,13 @@ public class InputReader implements Reader{
     }
 
     @Override
-    public int[][] fetchMatrix() { // Null should be replaced with a custom exception
+    public Graph fetchGraph() { // Null should be replaced with a custom exception
+        Graph graph = new Graph();
         String line;
-        int matrixSize = 0;
 
-        int lineIndex    = 0;
-        int columnIndex = 0;
+        int matrixSize = 0;
+        int depth = 1;
+        int offset = 0;
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(this.filePath));
@@ -30,17 +39,25 @@ public class InputReader implements Reader{
                 }
             }
 
-            int[][] matrix = new int[matrixSize][matrixSize];
+            offset = matrixSize - 1;
+
+            for (int i = 1; i <= matrixSize; i++) {
+                graph.addNode(String.valueOf(i));
+            }
 
             while ((line = bufferedReader.readLine()) != null) {
                 String[] nodes = line.split(" ");
-                for (String node : nodes) {
-                    matrix[lineIndex][columnIndex++] = Integer.parseInt(node);
+                for (int i = nodes.length; i >= 1; i--) {
+                    int index = i + (matrixSize - offset);
+
+                    graph.addNeighbour(String.valueOf(depth), String.valueOf(index), Integer.parseInt(nodes[i-1]));
+                    graph.addNeighbour(String.valueOf(index), String.valueOf(depth), Integer.parseInt(nodes[i-1]));
                 }
-                columnIndex = 0;
-                lineIndex++;
+                depth++;
+                offset--;
             }
-            return matrix;
+
+            return graph;
         } catch(IOException e) {
             return null;
         }
