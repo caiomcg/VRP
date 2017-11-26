@@ -16,7 +16,9 @@ public class VRPSolver {
         int[][] matrix = this.inputReader.fetchMatrix();
         this.printMatrix(matrix);
 
-        return new Result();
+        // Run the VPR
+
+        return new Result().addNode("A", 0);
     }
 
     private void printMatrix(int[][] matrix) {
