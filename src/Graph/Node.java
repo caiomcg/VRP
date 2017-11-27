@@ -24,4 +24,12 @@ public class Node {
     public String getName() {
         return name;
     }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
 }

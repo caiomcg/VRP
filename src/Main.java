@@ -27,11 +27,12 @@ public class Main {
         route.add(graph.getNode("2"));
         route.add(graph.getNode("4"));
 
-        VRPSolver solver = new VND(graph);
-        ArrayList<Result> results = solver.findRoute(graph.getNode("1"), route);
+        VND solver = new VND(graph);
 
-        for (Result result : results) {
-            System.out.println(result.toString());
-        }
+        Result result = solver.findRoute(graph.getNode("1"), route);
+
+        System.out.println(result.toString());
+
+        solver.run(graph.getNode("1"), route, result.getRoute());
     }
 }

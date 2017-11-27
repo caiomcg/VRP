@@ -12,5 +12,5 @@ public abstract class VRPSolver {
         this.graph = graph;
     }
 
-    public abstract ArrayList<Result> findRoute(Node start, ArrayList<Node> route);
+    public abstract Result findRoute(Node start, ArrayList<Node> route);
 }

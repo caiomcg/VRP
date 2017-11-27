@@ -37,13 +37,13 @@ public class InputReader implements Reader{
 
             for (int i = 1; i <= matrixSize; i++) {
                 graph.addNode(String.valueOf(i));
+                graph.addNeighbour(String.valueOf(i), String.valueOf(i), 0);
             }
 
             while ((line = bufferedReader.readLine()) != null) {
                 String[] nodes = line.split(" ");
                 for (int i = nodes.length; i >= 1; i--) {
                     int index = i + (matrixSize - offset);
-
                     graph.addNeighbour(String.valueOf(depth), String.valueOf(index), Integer.parseInt(nodes[i-1]));
                     graph.addNeighbour(String.valueOf(index), String.valueOf(depth), Integer.parseInt(nodes[i-1]));
                 }
