@@ -1,20 +1,16 @@
 package VRPSolver;
 
-import InputReader.InputReader;
+import Graph.Graph;
+import Graph.Node;
 
-public class VRPSolver {
-    private InputReader inputReader;
+import java.util.ArrayList;
 
-    public void setInputReader(InputReader reader) {
-        this.inputReader = reader;
+public abstract class VRPSolver {
+    protected Graph graph;
+
+    public VRPSolver(Graph graph) {
+        this.graph = graph;
     }
-    
-    private void printMatrix(int[][] matrix) {
-        for (int[] lines: matrix) {
-            for (int values: lines) {
-                System.out.print(values + " ");
-            }
-            System.out.println("");
-        }
-    }
+
+    public abstract ArrayList<Result> findRoute(Node start, ArrayList<Node> route);
 }

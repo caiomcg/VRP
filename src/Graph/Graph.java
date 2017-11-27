@@ -24,7 +24,7 @@ public class Graph {
             this.nodes.add(from);
         }
 
-        Node to   = this.getNode(neighbour_name);
+        Node to = this.getNode(neighbour_name);
         if (to == null) {
             to = new Node(node_name);
             this.nodes.add(to);

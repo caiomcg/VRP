@@ -6,12 +6,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-//    1  2  3  4
-// 1  0  4  2  6
-// 2  4  0  4  3
-// 3  2  4  0  7
-// 4  6  3  7  0
-
 public class InputReader implements Reader{
     private String filePath;
 
