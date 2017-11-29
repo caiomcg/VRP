@@ -55,33 +55,54 @@ public class VND extends VRPSolver {
         return result;
     }
 
-    public void run(Node start, ArrayList<Node> route, ArrayList<Node> solution) {
-        System.out.println("\nRunning VND...\n");
+    private void printRoute(ArrayList<Node> ext){
+        for (Node n : ext) {
+            System.out.print(n.getName() + " -> ");
+        }
+    }
 
-        ArrayList<Node> variation = new ArrayList<>();
+    private ArrayList<Node> optSwap(ArrayList<Node> route,int i, int k) {
+        ArrayList<Node> new_route = new ArrayList<Node>();
+
+        for (int count = 0; count < i; count++)
+            new_route.add(route.get(count));
+
+        for (int count = k; i < count; count--)
+            new_route.add(route.get(count));
+
+        for (int count = k+1; count < route.size(); count++)
+            new_route.add(route.get(count));
+
+        return new_route;
+    }
+
+    private int sizeSolution(ArrayList<Node> possibleSolution){
+        int extension = 0;
+        for (int i = 0; i < possibleSolution.size()-1; i++) {
+            extension += possibleSolution.get(i).getNeighbours().get(possibleSolution.get(i+1));
+        }
+        return extension;
+    }
+
+    private ArrayList<Node> optFunction(ArrayList<Node> route){
+        int best_distance = sizeSolution(route);
+
+        for (int i = 1; i < route.size() - 2; i++) {
+            for (int k = i + 1; k < route.size() - 1; k++) {
+                ArrayList<Node> new_route = optSwap(route, i, k);
+                int new_distance = sizeSolution(new_route);
+                if (new_distance < best_distance) {
+                    return optFunction(new_route);
+                }
+            }
+        }
+
+        return route;
+    }
+
+    private ArrayList<Node> minimumPath (ArrayList<Node> solution){
         ArrayList<ArrayList<Node>> solutions = new ArrayList<ArrayList<Node>>();
-
-        for (int i = 1; i < solution.size() - 1; i++) {
-            variation.add(solution.get(i)); // Get the middle section (candidates of variation)
-        }
-
-        if (variation.isEmpty()) {
-            System.out.println("Cannot run VND");
-            return;
-        }
-
-        System.out.print("Will apply VND on the current nodes: ");
-
-        for (Node n : variation) {
-            System.out.print(n.getName() + " ");
-        }
-
-        System.out.println();
-        //3 3  3 2  2 3  2 2
-
-        //1 3 2 4
-        //1 2 3 4
-
+        ArrayList<Node> variation = new ArrayList<>();
         for (Node n : variation) {
             for (Node others : variation) {
                 ArrayList<Node> partialSolution = new ArrayList<>();
@@ -119,22 +140,47 @@ public class VND extends VRPSolver {
                 solutions.add(partialSolution);
             }
         }
-
+        int extension = sizeSolution(solution);
+        ArrayList<Node> solutionFinal = solution;
         for (ArrayList<Node> possibleSolution : solutions) {
-            for (Node n : possibleSolution) {
-                System.out.print(n.getName() + " -> ");
+            extension = sizeSolution(possibleSolution);
+            if(extension > sizeSolution(possibleSolution)){
+                extension = sizeSolution(possibleSolution);
+                solutionFinal = possibleSolution;
             }
+        }
+        return solutionFinal;
+    }
 
-            int extension = 0;
+    public void run(Node start, ArrayList<Node> route, ArrayList<Node> solution) {
+        System.out.println("\nRunning VND...\n");
 
-            for (int i = 0; i < possibleSolution.size()-1; i++) {
-                extension += possibleSolution.get(i).getNeighbours().get(possibleSolution.get(i+1));
-            }
+        ArrayList<Node> variation = new ArrayList<>();
+        ArrayList<ArrayList<Node>> solutions = new ArrayList<ArrayList<Node>>();
 
-            System.out.println(" Extension: " + extension);
+        for (int i = 1; i < solution.size() - 1; i++) {
+            variation.add(solution.get(i)); // Get the middle section (candidates of variation)
         }
 
+        if (variation.isEmpty()) {
+            System.out.println("Cannot run VND");
+            return;
+        }
+        System.out.println();
 
+        System.out.println("2-OPT");
+        ArrayList<Node> routeOpt = optFunction(solution);
+        printRoute(routeOpt);
+        int sizeOpt = sizeSolution(routeOpt);
+        System.out.println("Extension: "+sizeOpt);
+
+        System.out.println("-----------------");
+
+        System.out.println("Caminho Mínimo");
+        ArrayList<Node> routeMinimumPath = minimumPath(solution);
+        printRoute(routeMinimumPath);
+        int sizeMinimumPath = sizeSolution(routeMinimumPath);
+        System.out.println("Extension: "+sizeMinimumPath);
 
     }
 }
