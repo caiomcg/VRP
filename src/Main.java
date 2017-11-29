@@ -27,12 +27,14 @@ public class Main {
         route.add(graph.getNode("2"));
         route.add(graph.getNode("4"));
 
-        VND solver = new VND(graph);
+        VND solverVND = new VND(graph);
+        Result resultVND = solverVND.findRoute(graph.getNode("1"), route);
+        System.out.println(resultVND.toString());
+        solverVND.run(graph.getNode("1"), route, resultVND.getRoute());
 
-        Result result = solver.findRoute(graph.getNode("1"), route);
-
-        System.out.println(result.toString());
-
-        solver.run(graph.getNode("1"), route, result.getRoute());
+        GRASP solverGRASP = new GRASP(graph);
+        Result resultGRASP = solverGRASP.findRoute(graph.getNode("1"), route);
+        System.out.println(resultGRASP.toString());
+        solverGRASP.run(graph.getNode("1"), route, resultGRASP.getRoute());
     }
 }

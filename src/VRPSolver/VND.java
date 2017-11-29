@@ -55,12 +55,6 @@ public class VND extends VRPSolver {
         return result;
     }
 
-    private void printRoute(ArrayList<Node> ext){
-        for (Node n : ext) {
-            System.out.print(n.getName() + " -> ");
-        }
-    }
-
     private ArrayList<Node> optSwap(ArrayList<Node> route,int i, int k) {
         ArrayList<Node> new_route = new ArrayList<Node>();
 
@@ -74,14 +68,6 @@ public class VND extends VRPSolver {
             new_route.add(route.get(count));
 
         return new_route;
-    }
-
-    private int sizeSolution(ArrayList<Node> possibleSolution){
-        int extension = 0;
-        for (int i = 0; i < possibleSolution.size()-1; i++) {
-            extension += possibleSolution.get(i).getNeighbours().get(possibleSolution.get(i+1));
-        }
-        return extension;
     }
 
     private ArrayList<Node> optFunction(ArrayList<Node> route){
