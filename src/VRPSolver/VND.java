@@ -139,8 +139,6 @@ public class VND extends VRPSolver {
     }
 
     public void run(Node start, ArrayList<Node> route, ArrayList<Node> solution) {
-        System.out.println("\nRunning VND...\n");
-
         ArrayList<Node> variation = new ArrayList<>();
         ArrayList<ArrayList<Node>> solutions = new ArrayList<ArrayList<Node>>();
 

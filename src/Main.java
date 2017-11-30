@@ -23,18 +23,29 @@ public class Main {
 //        }
 
         ArrayList<Node> route = new ArrayList<>();
+        ArrayList<Node> routeGrasp = new ArrayList<>();
+
+
 
         route.add(graph.getNode("2"));
         route.add(graph.getNode("4"));
 
         VND solverVND = new VND(graph);
+
+        ArrayList<Node> mapGrasp = new ArrayList<>(graph.getNodes());
+
         Result resultVND = solverVND.findRoute(graph.getNode("1"), route);
-        System.out.println(resultVND.toString());
         solverVND.run(graph.getNode("1"), route, resultVND.getRoute());
 
+
+        routeGrasp.add(graph.getNode("2"));
+        routeGrasp.add(graph.getNode("4"));
+
+
+
         GRASP solverGRASP = new GRASP(graph);
-        Result resultGRASP = solverGRASP.findRoute(graph.getNode("1"), route);
-        System.out.println(resultGRASP.toString());
-        solverGRASP.run(graph.getNode("1"), route, resultGRASP.getRoute());
+        solverGRASP.run(graph.getNode("1"), routeGrasp, mapGrasp);
+
+
     }
 }
